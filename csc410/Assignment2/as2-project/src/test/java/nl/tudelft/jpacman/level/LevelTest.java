@@ -155,4 +155,9 @@ public class LevelTest {
 		level.registerPlayer(p3);
 		verify(p3).occupy(square1);
 	}
+	
+	@Test
+	public void aliveTest() {
+		assertFalse(level.isAnyPlayerAlive());
+	}
 }

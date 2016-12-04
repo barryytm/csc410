@@ -79,4 +79,12 @@ public class BoardTest {
 	public void verifyX0Y1() {
 		assertEquals(x0y1, board.squareAt(0, 1));
 	}
+	
+	/**
+	 * Verifies the square at x1y1 is indeed the right square.
+	 */
+	@Test
+	public void verifyX1Y1() {
+		assertEquals(x1y1, board.squareAt(1, 1));
+	}
 }
