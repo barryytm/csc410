@@ -41,7 +41,7 @@ public class Level {
 	 * other.
 	 */
 	private final Object startStopLock = new Object();
-
+	
 	/**
 	 * The NPCs of this level and, if they are running, their schedules.
 	 */
@@ -52,6 +52,12 @@ public class Level {
 	 * and NPCs can move.
 	 */
 	private boolean inProgress;
+	
+	/**
+	 * True iff all the NPCs are frozen
+	 */
+	private boolean inFrozen;
+	
 
 	/**
 	 * The squares from which players can start this game.
@@ -98,6 +104,7 @@ public class Level {
 
 		this.board = b;
 		this.inProgress = false;
+		this.inFrozen = false;
 		this.npcs = new HashMap<>();
 		for (NPC g : ghosts) {
 			npcs.put(g, null);
@@ -198,13 +205,15 @@ public class Level {
 	 * NPCs.
 	 */
 	public void start() {
-		synchronized (startStopLock) {
-			if (isInProgress()) {
-				return;
+		if (! this.isFrozen()) {
+			synchronized (startStopLock) {
+				if (isInProgress()) {
+					return;
+				}
+				startNPCs();
+				inProgress = true;
+				updateObservers();
 			}
-			startNPCs();
-			inProgress = true;
-			updateObservers();
 		}
 	}
 
@@ -213,12 +222,28 @@ public class Level {
 	 * and stopping all NPCs.
 	 */
 	public void stop() {
-		synchronized (startStopLock) {
-			if (!isInProgress()) {
-				return;
+		if (! this.isFrozen()) {
+			synchronized (startStopLock) {
+				if (!isInProgress()) {
+					return;
+				}
+				stopNPCs();
+				inProgress = false;
 			}
+		}
+	}
+	
+	/**
+	 * freezes npc
+	 */
+	
+	public void freeze() {
+		if (! this.isFrozen()) {
 			stopNPCs();
-			inProgress = false;
+			inFrozen = true;
+		} else {
+			startNPCs();
+			inFrozen = false;
 		}
 	}
 
@@ -253,6 +278,10 @@ public class Level {
 	 */
 	public boolean isInProgress() {
 		return inProgress;
+	}
+	
+	public boolean isFrozen() {
+		return inFrozen;
 	}
 
 	/**

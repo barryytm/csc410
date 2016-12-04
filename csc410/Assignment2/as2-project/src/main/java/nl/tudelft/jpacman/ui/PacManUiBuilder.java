@@ -25,6 +25,11 @@ public class PacManUiBuilder {
 	private static final String START_CAPTION = "Start";
 
 	/**
+	 * Caption for freeze button
+	 */
+	private static final String FREEZE_CAPTION = "Freeze";
+	
+	/**
 	 * Map of buttons and their actions.
 	 */
 	private final Map<String, Action> buttons;
@@ -66,6 +71,7 @@ public class PacManUiBuilder {
 		if (defaultButtons) {
 			addStartButton(game);
 			addStopButton(game);
+			addFreezeButton(game);
 		}
 		return new PacManUI(game, buttons, keyMappings, scoreFormatter);
 	}
@@ -105,7 +111,21 @@ public class PacManUiBuilder {
 			}
 		});
 	}
+	
+	/**
+	 * Adds a button with the caption {@value #FREEZE_CAPTION} that freezes the game
+	 */
+	private void addFreezeButton(final Game game) {
+		assert game != null;
 
+		buttons.put(FREEZE_CAPTION, new Action() {
+			@Override
+			public void doAction() {
+				game.freeze();
+			}
+		});
+	}
+	
 	/**
 	 * Adds a key listener to the UI.
 	 * 
@@ -151,6 +171,7 @@ public class PacManUiBuilder {
 		defaultButtons = true;
 		buttons.put(START_CAPTION, null);
 		buttons.put(STOP_CAPTION, null);
+		buttons.put(FREEZE_CAPTION, null);
 		return this;
 	}
 	
