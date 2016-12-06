@@ -35,6 +35,7 @@ public abstract class Game implements LevelObserver {
 	 */
 	protected Game() {
 		inProgress = false;
+		inFrozen = false;
 	}
 
 	/**
@@ -122,7 +123,7 @@ public abstract class Game implements LevelObserver {
 	
 	@Override
 	public void levelWon() {
-		stop();
+		start();
 	}
 	
 	@Override
