@@ -20,6 +20,12 @@ public abstract class Game implements LevelObserver {
 	private boolean inProgress;
 	
 	/**
+	 * <code>true</code> if the NPCs are frozen.
+	 */
+	private boolean inFrozen;
+	
+	
+	/**
 	 * Object that locks the start and stop methods.
 	 */
 	private final Object progressLock = new Object();
@@ -65,7 +71,13 @@ public abstract class Game implements LevelObserver {
 	 * freezes the npc.
 	 */
 	public void freeze() {
-		getLevel().freeze();
+		if (! this.isFrozen()) {
+			this.getLevel().freeze();
+			inFrozen = true;
+		} else {
+			this.getLevel().freeze();
+			inFrozen = false;
+		}
 	}
 		
 
@@ -76,7 +88,13 @@ public abstract class Game implements LevelObserver {
 		return inProgress;
 	}
 	
-
+	/**
+	 * @return <code>true</code> iff the game is started and in progress.
+	 */
+	public boolean isFrozen() {
+		return inFrozen;
+	}
+	
 	/**
 	 * @return An immutable list of the participants of this game.
 	 */

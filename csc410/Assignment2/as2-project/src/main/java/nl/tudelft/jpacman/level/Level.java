@@ -205,15 +205,13 @@ public class Level {
 	 * NPCs.
 	 */
 	public void start() {
-		if (! this.isFrozen()) {
-			synchronized (startStopLock) {
-				if (isInProgress()) {
-					return;
-				}
-				startNPCs();
-				inProgress = true;
-				updateObservers();
+		synchronized (startStopLock) {
+			if (isInProgress()) {
+				return;
 			}
+			startNPCs();
+			inProgress = true;
+			updateObservers();
 		}
 	}
 
@@ -222,19 +220,17 @@ public class Level {
 	 * and stopping all NPCs.
 	 */
 	public void stop() {
-		if (! this.isFrozen()) {
-			synchronized (startStopLock) {
-				if (!isInProgress()) {
-					return;
-				}
-				stopNPCs();
-				inProgress = false;
+		synchronized (startStopLock) {
+			if (!isInProgress()) {
+				return;
 			}
+			stopNPCs();
+			inProgress = false;
 		}
 	}
 	
 	/**
-	 * freezes npc
+	 * freezes NPCs
 	 */
 	
 	public void freeze() {
@@ -246,6 +242,10 @@ public class Level {
 			inFrozen = false;
 		}
 	}
+	
+	/**
+	 * unfreezes NPCs
+	 */
 
 	/**
 	 * Starts all NPC movement scheduling.
