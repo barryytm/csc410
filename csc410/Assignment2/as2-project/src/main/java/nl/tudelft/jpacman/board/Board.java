@@ -86,4 +86,19 @@ public class Board {
 	public boolean withinBorders(int x, int y) {
 		return x >= 0 && x < getWidth() && y >= 0 && y < getHeight();
 	}
+	
+	public static void main(String[] args) {
+		int maxX = 1;
+		int maxY = 1;
+		Square[][] grid = new Square[maxX][maxY];
+
+		for (int i = 0; i < maxX; i++) {
+			for (int j = 0; j < maxY; j++) {
+				grid[i][j] = new BasicSquare();
+				
+			}
+		}
+		Board board = new Board(grid);
+		board.withinBorders(0, 0);
+	}
 }
